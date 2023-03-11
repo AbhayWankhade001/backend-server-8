@@ -26,6 +26,13 @@ const config = process.env.CONFIG ? JSON.parse(Buffer.from(process.env.CONFIG, '
 
 app.get('/', (req,res)=>{
   res.status(201).json("home get request")
+   try {
+    const data = await User.find();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 })
 
 /** api routes */
@@ -33,15 +40,9 @@ app.use('/api' , router )
 app.use("/api", router2);
 
 /** fetch data from database */
-app.get('/api/data', async (req, res) => {
-  try {
-    const data = await User.find();
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+// app.get('/api/data', async (req, res) => {
+ 
+// });
 
 /** start server */
 connect().then(()=>{
