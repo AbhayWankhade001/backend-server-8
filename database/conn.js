@@ -15,7 +15,7 @@
 //     return db;
 // }
 
-export default connect;
+// export default connect;
 import mongoose from "mongoose";
 import ENV from '../router/config.js';
 
