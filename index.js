@@ -6,6 +6,8 @@ import router from './router/route.js';
 import bodyParser from 'body-parser'; 
 import router2 from './router/router2.js';
 import "./router/config.js"
+import User from './model/User.model.js';
+
 const app = express();
 
 /** middlewares */
@@ -29,6 +31,17 @@ app.get('/', (req,res)=>{
 /** api routes */
 app.use('/api' , router )
 app.use("/api", router2);
+
+/** fetch data from database */
+app.get('/api/data', async (req, res) => {
+  try {
+    const data = await User.find();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 /** start server */
 connect().then(()=>{
