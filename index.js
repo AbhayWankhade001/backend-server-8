@@ -5,7 +5,6 @@ import connect from './database/conn.js';
 import router from './router/route.js';
 import bodyParser from 'body-parser'; 
 import router2 from './router/router2.js';
-import "./router/config.js"
 import User from './model/User.model.js';
 
 const app = express();
@@ -23,26 +22,24 @@ const port = process.env.PORT || 8080;
 const config = process.env.CONFIG ? JSON.parse(Buffer.from(process.env.CONFIG, 'base64').toString('ascii')) : {};
 
 /** Https get req */
-
 app.get('/', (req,res)=>{
   res.status(201).json("home get request")
-   try {
-    const data = await User.find();
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-})
+});
 
 /** api routes */
 app.use('/api' , router )
 app.use("/api", router2);
 
 /** fetch data from database */
-// app.get('/api/data', async (req, res) => {
- 
-// });
+app.get('/api/data', async (req, res) => {
+  try {
+    const data = await User.find();
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 /** start server */
 connect().then(()=>{
@@ -55,7 +52,7 @@ connect().then(()=>{
   }
 }).catch(error => {
   console.log("invalid database connection.... !")
-})
+});
 
 // Use config variables
 
